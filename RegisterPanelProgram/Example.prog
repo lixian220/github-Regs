@@ -1,0 +1,25 @@
+/**
+ * Example testprogram with Toolbox Auxiliary flow
+ */
+testprogram Example {
+    dutboard = common.Simple;
+
+
+    testflow PreBind {
+        flow = common.ExamplePreBind;
+    }
+
+    testflow Main {
+        flow = common.ExampleMain ;
+    }
+
+    testflow CustomizedRegisterPanelFlow {
+        flow = common.CustomizedProtocolDebug;
+    }
+
+    //auxiliary flow which need be insert into Test program
+    testflow ToolBoxPanel {
+        flow = Panel.ToolBox;
+    }
+}
+

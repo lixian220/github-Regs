@@ -1,0 +1,69 @@
+/**
+ * Toolbox Auxiliary flow, will be invoked by Register Panel GUI through Device Debugging API (DD-API)
+ */
+flow CustomizedProtocolDebug {
+
+    setup {
+        /** This testsuite will be called from Register Panel GUI.
+         * When user click on applyAll button with PARALLEL_LOOPBACK protocol predefined in SVD xml file,
+         * this testsuite will be called. And protocolAwareResult will return "true" String for every sites,
+         * if it is executed successfully.
+         */
+        suite PARALLEL_LOOPBACK_write calls testMethodLibrary.registerPanelTML.ExecuteProtocolAware {
+            protocolAwareCommand 	= "write,PARALLEL_LOOPBACK,CR,,,0x7,,0x40010000,0x1337F7F,read-write,0x00000007"; //TransactionName, ProtocolName, RegisterName, BitName, BitLoc, Data, ReadBackData, Address, Mask, Read-Write, Reset
+            specificationFile 		= setupRef(specs.PARALLEL_LOOPBACKSpec);
+            debugFlag  				= false;
+        }
+
+        /** This testsuite will be called from Register Panel GUI.
+         * When user click on applyAll button with PARALLEL_LOOPBACK protocol predefined in SVD xml file,
+         * after all the PARALLEL_LOOPBACK_write are executed, all the register status will be polled through this testsuite.
+         * protocolAwareResult will return protocolAwareResult in Hex format. Result will be processed and update
+         * to Register Panel GUI.
+         */
+        suite PARALLEL_LOOPBACK_read calls testMethodLibrary.registerPanelTML.ExecuteProtocolAware {
+            protocolAwareCommand	= "read,PARALLEL_LOOPBACK,CR,,,0x7,,0x40010000,0x1337F7F,read-write,0x00000007"; //TransactionName, ProtocolName, RegisterName, BitName, BitLoc, Data, ReadBackData, Address, Mask, Read-Write, Reset
+            specificationFile 		= setupRef(specs.PARALLEL_LOOPBACKSpec);
+            debugFlag  				= false;
+        }
+
+        /** This testsuite will be called from Register Panel GUI.
+         * When user click on applyAll button with SERIAL_LOOPBACK protocol predefined in SVD xml file,
+         * this testsuite will be called. And protocolAwareResult will return "true" String for every sites,
+         * if it is executed successfully.
+         */
+        suite SERIAL_LOOPBACK_write calls testMethodLibrary.registerPanelTML.ExecuteProtocolAware {
+            protocolAwareCommand	= "write,SERIAL_LOOPBACK,BYPASS,,,0b0001000101,,0b1000100010,0x0"; //TransactionType, ProtocolName, RegisterName, DrBitName, DrBitLoc, DrBitData, ReadBackData, IrRegister, Reset
+            specificationFile 		= setupRef(specs.SERIAL_LOOPBACKSpec);
+            debugFlag  				= false;
+        }
+
+        /** This testsuite will be called from Register Panel GUI.
+         * When user click on applyAll button with SERIAL_LOOPBACK protocol predefined in SVD xml file,
+         * after all the SERIAL_LOOPBACK_write are executed, all the register status will be polled through this testsuite.
+         * protocolAwareResult will return protocolAwareResult in Hex format. Result will be processed and update
+         * to Register Panel GUI.
+         */
+        suite SERIAL_LOOPBACK_read calls testMethodLibrary.registerPanelTML.ExecuteProtocolAware {
+            protocolAwareCommand	= "read,SERIAL_LOOPBACK,BYPASS,,,0b1000100011,,0b1000100010,0x0"; //TransactionType, ProtocolName, RegisterName, DrBitName, DrBitLoc, DrBitData, ReadBackData, IrRegister, Reset
+            specificationFile 		= setupRef(specs.SERIAL_LOOPBACKSpec);
+            debugFlag  				= false;
+        }
+
+        /** This testsuite will be called from Register Panel GUI.
+        * This testsuite will call dummy testmethod generated from Wizard,
+        * And based on register level information programmed in CSV configuration file
+        */
+        suite CSV_Read calls Panel.RegisterPanel.RegisterPanelTestMethod {}
+
+        /** This testsuite will be called from Register Panel GUI.
+        * This testsuite will call dummy testmethod generated from Wizard,
+        * And based on register level information programmed in CSV configuration file
+        */
+        suite CSV_Write calls Panel.RegisterPanel.RegisterPanelTestMethod {}
+
+    }
+
+    execute {
+    }
+}

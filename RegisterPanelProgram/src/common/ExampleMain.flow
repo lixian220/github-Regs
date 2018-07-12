@@ -1,0 +1,25 @@
+/**
+ * Small flow with two "ExecuteProtocolAware" testsuites, as main flow.
+ */
+flow ExampleMain {
+
+    setup {
+        suite func_write calls testMethodLibrary.registerPanelTML.ExecuteProtocolAware {
+            protocolAwareCommand 	= "write,PARALLEL_LOOPBACK,CR,,,0x45,,0x0123,0x1337F7F,read-write,0x00000007"; //TransactionName, ProtocolName, RegisterName, BitName, BitLoc, Data, ReadBackData, Address, Mask, Read-Write, Reset
+            specificationFile 		= setupRef(specs.PARALLEL_LOOPBACKSpec);
+            debugFlag  				= false;
+        }
+        suite func_read calls testMethodLibrary.registerPanelTML.ExecuteProtocolAware {
+            protocolAwareCommand 	= "read,PARALLEL_LOOPBACK,CR,,,,,0x6789,0x1337F7F,read-write,0x00000007"; //TransactionName, ProtocolName, RegisterName, BitName, BitLoc, Data, ReadBackData, Address, Mask, Read-Write, Reset
+            specificationFile 		= setupRef(specs.PARALLEL_LOOPBACKSpec);
+            debugFlag  				= false;
+        }
+    }
+
+    execute {
+
+        func_write.execute();
+        func_read.execute();
+        addBin(1);
+    }
+}

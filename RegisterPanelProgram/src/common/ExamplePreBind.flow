@@ -1,0 +1,13 @@
+/**
+ * An example of Prebind flow for bin definition
+ */
+flow ExamplePreBind {
+
+    setup {
+        suite defineBins calls DefineBins {}
+    }
+
+    execute {
+        defineBins.execute();
+    }
+}

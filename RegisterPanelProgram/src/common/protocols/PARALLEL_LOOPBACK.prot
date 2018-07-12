@@ -1,0 +1,134 @@
+/**
+* This is simplified PARALLEL_LOOPBACK protocol, consists of input and output pins only.
+* There is no clock signals or any signature pins in the reference implementation
+* Input pins (ADxx) are matched with output pins (IOxx) through cross-connect board
+*/
+protocol PARALLEL_LOOPBACK {
+     //<-- Protocol Structure -->
+     // for write :
+     // R<cycleAddr>            for address
+     // R1                      for control
+     // R<repeatCycles+1>       for data
+     // R<burstEndCycles-2>     for turnaround vector
+     // R1                      for turnaround vector
+     // R1                      for turnaround vector
+
+     // for read :
+     // R<cycleAddr>            for address
+     // R1                      for control
+     // R<repeatCycles>         for pre wait data
+     // R1                      for read or capture data
+     // R1                      for post wait vector
+     // R1                      for post wait vector
+
+     //Variables assignment
+     val UnsignedLong cyclesAddr 	 = 4;
+     val UnsignedLong repeatCycles   = 10;
+     val UnsignedLong burstEndCycles = 18;
+     val UnsignedLong busSize        = 32;
+
+    //State mapping
+    mapping = drv [state0 = "0", state1 = "1"],
+              rcv [state0 = "L", state1 = "H", capture = "C", ignore = "X"];
+
+    //Idle Sequence
+    signalRole IO31,IO30,IO29,IO28,IO27,IO26,IO25,IO24,IO23,IO22,IO21,IO20,IO19,IO18,IO17,IO16,IO15,IO14,IO13,IO12,IO11,IO10,IO9,IO8,IO7,IO6,IO5,IO4,IO3,IO2,IO1,IO0 {
+        idleSequence = "X";
+    }
+    signalRole AD31,AD30,AD29,AD28,AD27,AD26,AD25,AD24,AD23,AD22,AD21,AD20,AD19,AD18,AD17,AD16,AD15,AD14,AD13,AD12,AD11,AD10,AD9,AD8,AD7,AD6,AD5,AD4,AD3,AD2,AD1,AD0 {
+        idleSequence = "X";
+    }
+
+    //Signal role groups
+    group DATA {
+        sliceDepth = 1;
+
+        //setup group from MSB to LSB
+        //If the signalRoles is setup as MSB to LSB, when converting Long to BiStream, need to convert in this format: address[31..0]
+        signalRoles = IO31,IO30,IO29,IO28,IO27,IO26,IO25,IO24,IO23,IO22,IO21,IO20,IO19,IO18,IO17,IO16,IO15,IO14,IO13,IO12,IO11,IO10,IO9,IO8,IO7,IO6,IO5,IO4,IO3,IO2,IO1,IO0;
+    }
+    group ADDRESS  {
+        sliceDepth = 1;
+
+        //setup group from MSB to LSB
+        //If the signalRoles is setup as MSB to LSB, when converting Long to BiStream, need to convert in this format: address[31..0]
+        signalRoles = AD31,AD30,AD29,AD28,AD27,AD26,AD25,AD24,AD23,AD22,AD21,AD20,AD19,AD18,AD17,AD16,AD15,AD14,AD13,AD12,AD11,AD10,AD9,AD8,AD7,AD6,AD5,AD4,AD3,AD2,AD1,AD0;
+    }
+
+    /**
+    * write transaction for PARALLEL_PROTOCOL
+    * Input Parameters: address and data, used to construct full protocol data
+    */
+    transaction write(UnsignedLong IN address, UnsignedLong IN data)
+    {
+        define ADDRESS
+        {
+            field drive setAddress;
+            setAddress = repeat(address[busSize-1 ..0], cyclesAddr);
+
+            field drive setControl;
+            setControl = repeat(address[busSize-1 ..0],repeatCycles);
+
+            field drive setData;
+            setData = data[busSize-1 ..0];
+
+            field drive setTurnAround;
+            setTurnAround = repeat(address[busSize-1 ..0],burstEndCycles);
+        }
+
+        define DATA
+        {
+            field receive setAddress;
+            setAddress = repeat("X", cyclesAddr*busSize);
+
+            field receive setControl;
+            setControl = repeat("X",repeatCycles*busSize);
+
+            field receive setData;
+            setData = repeat("X",busSize);
+
+            field receive setTurnAround;
+            setTurnAround = repeat("X",burstEndCycles*busSize);
+        }
+    }
+
+    /**
+    * read transaction for PARALLEL_PROTOCOL
+    * Input Parameters: In this implementation, user can setup read capture through "data"
+    */
+    transaction read(UnsignedLong IN address, UnsignedLong INOUT data) masks (UnsignedLong maskData)
+    {
+        define ADDRESS
+        {
+            field drive setAddress;
+            setAddress = repeat(address[busSize-1 ..0], cyclesAddr);
+
+            field drive setControl;
+            setControl = repeat(address[busSize-1 ..0],repeatCycles);
+
+            field drive setData;
+            setData = address[busSize-1 ..0];
+
+            field drive setTurnAround;
+            setTurnAround = repeat(address[busSize-1 ..0],burstEndCycles);
+        }
+
+        define DATA
+        {
+            field receive setAddress;
+            setAddress = repeat("X", cyclesAddr*busSize);
+
+            field receive setControl;
+            setControl = repeat("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",repeatCycles);
+
+            field receive readback;
+            @Properties(captureMode=isOut(data))
+            @Properties(mask=maskData[busSize-1 .. 0])
+            readback = data[busSize-1 .. 0];
+
+            field receive setTurnAround;
+            setTurnAround = repeat("X",burstEndCycles*busSize);
+        }
+        data = DATA.readback[0 .. busSize-1];
+    }
+}

@@ -1,0 +1,31 @@
+flow DCMeasure {
+
+    setup {
+
+        suite DCMeasureTest calls DCPanel{
+            dummySignals = "IO1";
+
+            ifvmSignalGroup[ ifvm ] = {
+
+            };
+
+            imSignalGroup[ im ] = {
+
+            };
+
+            vfimSignalGroup[ vfim ] = {
+
+            };
+
+            vmSignalGroup[ vm ] = {
+
+            };
+
+        }
+    }
+
+    execute {
+
+        DCMeasureTest.execute;
+    }
+}

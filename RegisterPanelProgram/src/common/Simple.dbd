@@ -1,0 +1,328 @@
+/**
+ * Dual sites dutboard for both SERIAL_LOOPBACK and PARALLEL_LOOBACK protocol.
+ * Model file requirement: Need to define digInOut pins with 1 PS1600 card, with pogo 10101-10816
+ */
+ dutboard Simple {
+    sites = 2;
+
+    signal AD0 {
+        site 1 { pogo = 10101; }
+        site 2 { pogo = 10501; }
+    }
+
+    signal AD1 {
+        site 1 { pogo = 10103; }
+        site 2 { pogo = 10503; }
+    }
+
+    signal AD2 {
+        site 1 { pogo = 10105; }
+        site 2 { pogo = 10505; }
+    }
+
+    signal AD3 {
+        site 1 { pogo = 10107; }
+        site 2 { pogo = 10507; }
+    }
+
+    signal AD4 {
+        site 1 { pogo = 10109; }
+        site 2 { pogo = 10509; }
+    }
+
+    signal AD5 {
+        site 1 { pogo = 10111; }
+        site 2 { pogo = 10511; }
+    }
+
+    signal AD6 {
+        site 1 { pogo = 10113; }
+        site 2 { pogo = 10513; }
+    }
+
+    signal AD7 {
+        site 1 { pogo = 10115; }
+        site 2 { pogo = 10515; }
+    }
+
+    signal AD8 {
+        site 1 { pogo = 10201; }
+        site 2 { pogo = 10601; }
+    }
+
+    signal AD9 {
+        site 1 { pogo = 10203; }
+        site 2 { pogo = 10603; }
+    }
+
+    signal AD10 {
+        site 1 { pogo = 10205; }
+        site 2 { pogo = 10605; }
+    }
+
+    signal AD11 {
+        site 1 { pogo = 10207; }
+        site 2 { pogo = 10607; }
+    }
+
+    signal AD12 {
+        site 1 { pogo = 10209; }
+        site 2 { pogo = 10609; }
+    }
+
+    signal AD13 {
+        site 1 { pogo = 10211; }
+        site 2 { pogo = 10611; }
+    }
+
+    signal AD14 {
+        site 1 { pogo = 10213; }
+        site 2 { pogo = 10613; }
+    }
+
+    signal AD15 {
+        site 1 { pogo = 10215; }
+        site 2 { pogo = 10615; }
+    }
+
+    signal AD16 {
+        site 1 { pogo = 10301; }
+        site 2 { pogo = 10701; }
+    }
+
+    signal AD17 {
+        site 1 { pogo = 10303; }
+        site 2 { pogo = 10703; }
+    }
+
+    signal AD18 {
+        site 1 { pogo = 10305; }
+        site 2 { pogo = 10705; }
+    }
+
+    signal AD19 {
+        site 1 { pogo = 10307; }
+        site 2 { pogo = 10707; }
+    }
+
+    signal AD20 {
+        site 1 { pogo = 10309; }
+        site 2 { pogo = 10709; }
+    }
+
+    signal AD21 {
+        site 1 { pogo = 10311; }
+        site 2 { pogo = 10711; }
+    }
+
+    signal AD22 {
+        site 1 { pogo = 10313; }
+        site 2 { pogo = 10713; }
+    }
+
+    signal AD23 {
+        site 1 { pogo = 10315; }
+        site 2 { pogo = 10715; }
+    }
+
+    signal AD24 {
+        site 1 { pogo = 10401; }
+        site 2 { pogo = 10801; }
+    }
+
+    signal AD25 {
+        site 1 { pogo = 10403; }
+        site 2 { pogo = 10803; }
+    }
+
+    signal AD26 {
+        site 1 { pogo = 10405; }
+        site 2 { pogo = 10805; }
+    }
+
+    signal AD27 {
+        site 1 { pogo = 10407; }
+        site 2 { pogo = 10807; }
+    }
+
+    signal AD28 {
+        site 1 { pogo = 10409; }
+        site 2 { pogo = 10809; }
+    }
+
+    signal AD29 {
+        site 1 { pogo = 10411; }
+        site 2 { pogo = 10811; }
+    }
+
+    signal AD30 {
+        site 1 { pogo = 10413; }
+        site 2 { pogo = 10813; }
+    }
+
+    signal AD31 {
+        site 1 { pogo = 10415; }
+        site 2 { pogo = 10815; }
+    }
+
+    signal IO0 {
+        site 1 { pogo = 10102; }
+        site 2 { pogo = 10502; }
+    }
+
+    signal IO1 {
+        site 1 { pogo = 10104; }
+        site 2 { pogo = 10504; }
+    }
+
+    signal IO2 {
+        site 1 { pogo = 10106; }
+        site 2 { pogo = 10506; }
+    }
+
+    signal IO3 {
+        site 1 { pogo = 10108; }
+        site 2 { pogo = 10508; }
+    }
+
+    signal IO4 {
+        site 1 { pogo = 10110; }
+        site 2 { pogo = 10510; }
+    }
+
+    signal IO5 {
+        site 1 { pogo = 10112; }
+        site 2 { pogo = 10512; }
+    }
+
+    signal IO6 {
+        site 1 { pogo = 10114; }
+        site 2 { pogo = 10514; }
+    }
+
+    signal IO7 {
+        site 1 { pogo = 10116; }
+        site 2 { pogo = 10516; }
+    }
+
+    signal IO8 {
+        site 1 { pogo = 10202; }
+        site 2 { pogo = 10602; }
+    }
+
+    signal IO9 {
+        site 1 { pogo = 10204; }
+        site 2 { pogo = 10604; }
+    }
+
+    signal IO10 {
+        site 1 { pogo = 10206; }
+        site 2 { pogo = 10606; }
+    }
+
+    signal IO11 {
+        site 1 { pogo = 10208; }
+        site 2 { pogo = 10608; }
+    }
+
+    signal IO12 {
+        site 1 { pogo = 10210; }
+        site 2 { pogo = 10610; }
+    }
+
+    signal IO13 {
+        site 1 { pogo = 10212; }
+        site 2 { pogo = 10612; }
+    }
+
+    signal IO14 {
+        site 1 { pogo = 10214; }
+        site 2 { pogo = 10614; }
+    }
+
+    signal IO15 {
+        site 1 { pogo = 10216; }
+        site 2 { pogo = 10616; }
+    }
+
+    signal IO16 {
+        site 1 { pogo = 10302; }
+        site 2 { pogo = 10702; }
+    }
+
+    signal IO17 {
+        site 1 { pogo = 10304; }
+        site 2 { pogo = 10704; }
+    }
+
+    signal IO18 {
+        site 1 { pogo = 10306; }
+        site 2 { pogo = 10706; }
+    }
+
+    signal IO19 {
+        site 1 { pogo = 10308; }
+        site 2 { pogo = 10708; }
+    }
+
+    signal IO20 {
+        site 1 { pogo = 10310; }
+        site 2 { pogo = 10710; }
+    }
+
+    signal IO21 {
+        site 1 { pogo = 10312; }
+        site 2 { pogo = 10712; }
+    }
+
+    signal IO22 {
+        site 1 { pogo = 10314; }
+        site 2 { pogo = 10714; }
+    }
+
+    signal IO23 {
+        site 1 { pogo = 10316; }
+        site 2 { pogo = 10716; }
+    }
+
+    signal IO24 {
+        site 1 { pogo = 10402; }
+        site 2 { pogo = 10802; }
+    }
+
+    signal IO25 {
+        site 1 { pogo = 10404; }
+        site 2 { pogo = 10804; }
+    }
+
+    signal IO26 {
+        site 1 { pogo = 10406; }
+        site 2 { pogo = 10806; }
+    }
+
+    signal IO27 {
+        site 1 { pogo = 10408; }
+        site 2 { pogo = 10808; }
+    }
+
+    signal IO28 {
+        site 1 { pogo = 10410; }
+        site 2 { pogo = 10810; }
+    }
+
+    signal IO29 {
+        site 1 { pogo = 10412; }
+        site 2 { pogo = 10812; }
+    }
+
+    signal IO30 {
+        site 1 { pogo = 10414; }
+        site 2 { pogo = 10814; }
+    }
+
+    signal IO31 {
+        site 1 { pogo = 10416; }
+        site 2 { pogo = 10816; }
+    }
+
+}

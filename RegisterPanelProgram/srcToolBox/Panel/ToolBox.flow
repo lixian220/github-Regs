@@ -1,0 +1,12 @@
+flow ToolBox {
+
+	setup {
+
+		flow DCMeasureTest calls Panel.DCPanel.DCMeasure{}
+		flow RegisterPanelFlow calls Panel.RegisterPanel.RegisterPanel{}
+	}
+
+	execute {
+
+	}
+}

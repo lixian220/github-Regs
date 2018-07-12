@@ -1,0 +1,12 @@
+/**
+* This spec file defines signal groups to be used in SERIAL_LOOPBACK and PARALLEL_LOOPBACK Protocol.
+* These definition will be used in specs file in src/specs folder,
+* which will be imported during Protocol Aware DS-API setup files generation.
+*/
+spec groups {
+   group allio = IO0+IO1+IO2+IO3+IO4+IO5+IO6+IO7+IO8+IO9+IO10+IO11+IO12+IO13+IO14+IO15+IO16+IO17+IO18+IO19+IO20+IO21+IO22+IO23+IO24+IO25+IO26+IO27+IO28+IO29+IO30+IO31;
+   group allad = AD0+AD1+AD2+AD3+AD4+AD5+AD6+AD7+AD8+AD9+AD10+AD11+AD12+AD13+AD14+AD15+AD16+AD17+AD18+AD19+AD20+AD21+AD22+AD23+AD24+AD25+AD26+AD27+AD28+AD29+AD30+AD31;
+   group ADDRESS =  AD31+AD30+AD29+AD28+AD27+AD26+AD25+AD24+AD23+AD22+AD21+AD20+AD19+AD18+AD17+AD16+AD15+AD14+AD13+AD12+AD11+AD10+AD9+AD8+AD7+AD6+AD5+AD4+AD3+AD2+AD1+AD0;
+   group SerialIO = IO1;
+   group SerialAD = AD0+AD1+AD2+AD3;
+}

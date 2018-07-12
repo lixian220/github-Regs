@@ -1,0 +1,128 @@
+/**
+* This is simplified SERIAL_LOOPBACK protocol, reference to JTAG implementation with variable IR.
+* This is <b>NOT</b> full JTAG implementation
+* Input signal will be driven through ADxx pins, and the only output signal pins, TDO will be driven from IOxx signal pin.
+*/
+protocol SERIAL_LOOPBACK {
+
+    // State mapping
+    mapping = drv [state0 = "0", state1 = "1"],
+              rcv [state0 = "L", state1 = "H", capture = "C", ignore = "X"];
+
+    // Signal roles
+    signalRole TCK {
+        idleSequence = "P";
+    }
+    signalRole TDI {
+        idleSequence = "0";
+    }
+    signalRole TMS {
+        idleSequence = "0";
+    }
+    signalRole TDO {
+        idleSequence = "X";
+    }
+    signalRole TRSTN {
+        idleSequence = "1";
+    }
+
+    /**
+    * customizedWrite transaction for SERIAL_PROTOCOL
+    * Input Parameters: IrDataIn and DrDataIn, used to construct full protocol data
+    */
+    transaction customizedWrite(BitSequence IN IrDataIn, BitSequence IN DrDataIn)
+    {
+            define TCK {
+            field drive Clk {};
+            Clk = repeat("P", 4+IrDataIn.length()+4+DrDataIn.length()+2);
+        }
+        define TDI {
+            field drive SelectIR {};
+            SelectIR = "0000";
+            field drive IR_Scan {};
+            IR_Scan = IrDataIn[0 .. IrDataIn.length()-1];
+            field drive IR2SelectDR {};
+            IR2SelectDR = "0000";
+            field drive DR_Scan {};
+            DR_Scan = DrDataIn[0 .. DrDataIn.length()-1];
+            field drive LeaveDR {};
+            LeaveDR = "00";
+        }
+        define TDO {
+            field receive Mask {};
+            Mask = repeat("X", 4+IrDataIn.length()+4+DrDataIn.length()+2);
+        }
+        define TMS {
+            field drive SelectIR {};
+            SelectIR = "1100";
+            field drive IR_Scan {};
+            IR_Scan = repeat("0", IrDataIn.length()-1)+"1";
+            field drive IR2SelectDR {};
+            IR2SelectDR = "1100";
+            field drive DR_Scan {};
+            DR_Scan = repeat("0", DrDataIn.length()-1)+"1";
+            field drive LeaveDR {};
+            LeaveDR = "10";
+        }
+        define TRSTN {
+           field drive NoReset {};
+           NoReset = repeat("1", 4+IrDataIn.length()+4+DrDataIn.length()+2);
+        }
+    }
+
+    /**
+    * customizedRead transaction for SERIAL_PROTOCOL
+    * Input Parameters: IrDataIn, DrDataIn. In online mode with loopback board, DrDataOut will be captured and equal to data sent in through
+    * DrDatain input parameter
+    */
+    transaction customizedRead(BitSequence IN IrDataIn, BitSequence IN DrDataIn, BitSequence INOUT DrDataOut)  masks (BitSequence DrMask)
+    {
+        define TCK {
+            field drive Clk{};
+            Clk = repeat("P", 4+IrDataIn.length()+4+DrDataIn.length()+2);
+        }
+        define TDI {
+            field drive SelectIR {};
+            SelectIR = "0000";
+            field drive IR_Scan {};
+            IR_Scan = IrDataIn[0 .. IrDataIn.length()-1];
+            field drive IR2SelectDR {};
+            IR2SelectDR = "0000";
+            field drive DR_Scan {};
+            DR_Scan = DrDataIn[0 .. DrDataIn.length() -1];
+            field drive LeaveDR {};
+            LeaveDR = "00";
+        }
+        define TDO {
+            field receive SelectIR {};
+            SelectIR = "XXXX";
+            field receive IR_Scan {};
+            IR_Scan = repeat("X", IrDataIn.length());
+            field receive IR2SelectDR {};
+            IR2SelectDR = "XXXX";
+            field receive DR_Scan {};
+            @Properties (captureMode = isOut(DrDataOut))
+            @Properties (mask = DrMask[0 .. DrMask.length() - 1])
+            DR_Scan = DrDataOut[0 .. DrDataIn.length()-1];
+            field receive LeaveDR {};
+            LeaveDR = "XX";
+        }
+        define TMS {
+            field drive SelectIR {};
+            SelectIR = "1100";
+            field drive IR_Scan {};
+            IR_Scan = repeat("0", IrDataIn.length()-1)+"1";
+            field drive IR2SelectDR {};
+            IR2SelectDR = "1100";
+            field drive DR_Scan {};
+            DR_Scan = repeat("0", DrDataIn.length()-1)+"1";
+            field drive LeaveDR {};
+            LeaveDR = "10";
+        }
+        define TRSTN {
+           field drive NoReset {};
+           NoReset = repeat("1", 4+IrDataIn.length()+4+DrDataIn.length()+2);
+        }
+        DrDataOut = TDO.DR_Scan[0 .. DrDataIn.length()-1];
+    }
+}

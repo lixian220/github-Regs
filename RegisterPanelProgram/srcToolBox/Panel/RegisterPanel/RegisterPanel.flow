@@ -1,0 +1,10 @@
+flow RegisterPanel {
+
+    setup {
+        suite Example_write calls RegisterPanelTestMethod {}
+        suite Example_read calls RegisterPanelTestMethod {}
+    }
+
+    execute {
+    }
+}
